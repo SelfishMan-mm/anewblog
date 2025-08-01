@@ -1,9 +1,74 @@
 import type { SiteConfig } from "@/types";
-import {
-  getProjectPlaceholder,
-  getAvatarPlaceholder,
-  getSkillIconPlaceholder,
-} from "@/lib/placeholder-utils";
+
+// 简单的占位符生成函数
+function getProjectPlaceholder(projectName: string, seed: number = 1): string {
+  const colors = [
+    ['#3b82f6', '#1e40af'],
+    ['#8b5cf6', '#7c3aed'],
+    ['#06b6d4', '#0891b2'],
+    ['#10b981', '#059669'],
+    ['#f59e0b', '#d97706'],
+    ['#ef4444', '#dc2626'],
+  ];
+  
+  const colorPair = colors[seed % colors.length];
+  const [color1, color2] = colorPair;
+  
+  const svg = `<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="grad${seed}" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:${color1};stop-opacity:1" />
+        <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#grad${seed})" />
+    <text x="50%" y="40%" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">${projectName}</text>
+    <text x="50%" y="60%" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="Arial, sans-serif" font-size="14">Project Preview</text>
+  </svg>`;
+  
+  try {
+    const base64 = typeof window !== 'undefined' ? btoa(svg) : Buffer.from(svg).toString('base64');
+    return `data:image/svg+xml;base64,${base64}`;
+  } catch {
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+}
+
+function getAvatarPlaceholder(name: string, size: number = 128): string {
+  const initial = name.charAt(0).toUpperCase();
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const hue = Math.abs(hash) % 360;
+  
+  const svg = `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="${size/2}" cy="${size/2}" r="${size/2}" fill="hsl(${hue}, 65%, 50%)" />
+    <text x="50%" y="50%" text-anchor="middle" dy="0.35em" fill="white" font-family="Arial, sans-serif" font-size="${size * 0.4}" font-weight="bold">${initial}</text>
+  </svg>`;
+  
+  try {
+    const base64 = typeof window !== 'undefined' ? btoa(svg) : Buffer.from(svg).toString('base64');
+    return `data:image/svg+xml;base64,${base64}`;
+  } catch {
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+}
+
+function getSkillIconPlaceholder(skillName: string, size: number = 32): string {
+  const initial = skillName.charAt(0).toUpperCase();
+  const svg = `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" rx="${size * 0.2}" fill="#6b7280" />
+    <text x="50%" y="50%" text-anchor="middle" dy="0.35em" fill="white" font-family="Arial, sans-serif" font-size="${size * 0.5}" font-weight="bold">${initial}</text>
+  </svg>`;
+  
+  try {
+    const base64 = typeof window !== 'undefined' ? btoa(svg) : Buffer.from(svg).toString('base64');
+    return `data:image/svg+xml;base64,${base64}`;
+  } catch {
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+}
 
 // 开发测试用的示例数据
 export const mockSiteData: SiteConfig = {
@@ -11,13 +76,13 @@ export const mockSiteData: SiteConfig = {
     name: "Meless",
     title: "躺平大师",
     motto: [
-      "一路寒风身入絮，命海浮沉客如独",
+      "一路寒风身入絮，命海浮沉客独行",
       "惊鸿四散鱼逃尽，唯有残帆傲此间",
       "独帜入渊深未知，身似浮萍命难持",
       "身如柳絮随风扬，无论云泥意贯一",
     ],
     avatar: "/avatar.jpg",
-    bio: "我只不过是个平凡人啊",
+    bio: "",
     location: "苏州",
     education: [
       {
@@ -39,22 +104,16 @@ export const mockSiteData: SiteConfig = {
       icon: "/icons/python.svg",
     },
     {
-      name: "C",
-      level: 80,
+      name: "C++",
+      level: 85,
       category: "编程语言",
       icon: "/icons/c.svg",
     },
     {
-      name: "JavaScript",
-      level: 70,
-      category: "编程语言",
-      icon: getSkillIconPlaceholder("JavaScript"),
-    },
-    {
       name: "TypeScript",
-      level: 70,
+      level: 80,
       category: "编程语言",
-      icon: getSkillIconPlaceholder("TypeScript"),
+      icon: "/icons/BxlTypescript.svg",
     },
   ],
 
@@ -115,7 +174,7 @@ export const mockSiteData: SiteConfig = {
         "基于 C++ 开发的多人聊天室系统，支持实时消息传输和用户管理功能。",
       longDescription:
         "这是一个完整的多人聊天室系统，采用 C++ 开发，支持多客户端同时连接。系统实现了用户注册登录、实时消息传输、私聊和群聊功能。使用了 Socket 编程实现网络通信，多线程技术处理并发连接，确保系统的稳定性和高性能。项目展示了我在系统编程、网络编程和并发处理方面的技术能力。",
-      image: getProjectPlaceholder("cpp-chatroom", 1),
+      image: "/cpp-chatroom.jpg",
       techStack: ["C++", "Socket编程", "多线程", "Linux", "网络编程"],
       githubUrl: "https://github.com/SelfishMan-mm/cpp-chatroom",
       category: "系统开发",
@@ -130,7 +189,7 @@ export const mockSiteData: SiteConfig = {
       description: "加密货币数据分析仪表板，提供实时价格监控和技术分析工具。",
       longDescription:
         "一个专业的加密货币数据分析平台，集成了多个交易所的实时数据，提供价格监控、技术指标分析、投资组合管理等功能。使用 Python Flask 作为后端，Web3 技术获取区块链数据，Chart.js 实现数据可视化。该项目展示了我在数据分析、Web开发和区块链技术方面的综合能力。",
-      image: getProjectPlaceholder("CryptoDash", 2),
+      image: "/CryptoDash.png",
       techStack: ["Python", "Flask", "Web3", "数据分析", "Chart.js", "API集成"],
       githubUrl: "https://github.com/SelfishMan-mm/CryptoDash",
       liveUrl: "https://cryptodash-demo.vercel.app",
@@ -147,7 +206,7 @@ export const mockSiteData: SiteConfig = {
         "高效的网络数据爬取工具，支持多种网站和数据格式的自动化采集。",
       longDescription:
         "一个通用的网络数据爬取框架，支持多种网站的数据采集。集成了 Scrapy 框架的高性能爬取能力，BeautifulSoup 的灵活解析功能，以及 Selenium 的动态页面处理能力。数据存储支持 MongoDB，具有良好的扩展性。该工具已成功应用于多个数据采集项目。",
-      image: getProjectPlaceholder("数据爬虫工具", 3),
+      image: "/数据爬虫工具.png",
       techStack: [
         "Python",
         "Scrapy",
@@ -168,7 +227,7 @@ export const mockSiteData: SiteConfig = {
       description: "基于大语言模型的智能对话助手，支持多种任务处理。",
       longDescription:
         "一个集成了最新AI技术的智能助手项目，支持自然语言对话、代码生成、文档分析等多种功能。使用了Transformer架构和微调技术，能够理解用户意图并提供准确的回答。项目展示了我在AI-Agent开发和大模型应用方面的探索。",
-      image: getProjectPlaceholder("AI智能助手", 4),
+      image: "",
       techStack: ["Python", "PyTorch", "Transformers", "FastAPI", "AI-Agent"],
       githubUrl: "https://github.com/SelfishMan-mm/ai-assistant",
       category: "机器学习",
@@ -182,8 +241,8 @@ export const mockSiteData: SiteConfig = {
       description: "去中心化金融数据分析平台，提供DeFi协议数据监控和分析。",
       longDescription:
         "专注于DeFi生态的数据分析平台，集成了主流DeFi协议的数据，提供流动性分析、收益率计算、风险评估等功能。使用Web3技术直接从区块链获取数据，确保数据的准确性和实时性。该项目结合了我在区块链和数据分析方面的技能。",
-      image: getProjectPlaceholder("DeFi数据分析平台", 5),
-      techStack: ["Solidity", "Web3.js", "Python", "React", "DeFi协议"],
+      image: "",
+      techStack: ["Solidity", "Web3", "Python", "React", "DeFi协议"],
       githubUrl: "https://github.com/SelfishMan-mm/defi-analytics",
       category: "区块链",
       featured: false,
@@ -196,7 +255,7 @@ export const mockSiteData: SiteConfig = {
       description: "现代化的个人展示网站，采用最新的前端技术栈构建。",
       longDescription:
         "这个个人网站项目采用了Next.js、TypeScript、TailwindCSS等现代前端技术，集成了丰富的动效组件和响应式设计。网站展示了我的项目作品、技术技能和成长历程，是我前端开发能力的综合体现。",
-      image: getProjectPlaceholder("个人网站", 6),
+      image: "",
       techStack: [
         "Next.js",
         "TypeScript",

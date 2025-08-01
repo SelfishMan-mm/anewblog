@@ -164,7 +164,7 @@ export const DEFAULT_VALUES = {
   LANGUAGE: 'zh-CN' as const,
   ANIMATIONS_ENABLED: true,
   SKILL_DISPLAY_MODE: 'orbiting' as const,
-  PROJECT_DISPLAY_MODE: '3d-marquee' as const,
+  PROJECT_DISPLAY_MODE: '3d-pin' as const,
   BACKGROUND_EFFECT: 'meteors' as const
 } as const;
 

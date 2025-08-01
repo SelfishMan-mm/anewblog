@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="8" fill="#00599C"/>
+  <path fill="#ffffff" d="M35.5 40.5h12.5c8 0 14.5 6.5 14.5 14.5s-6.5 14.5-14.5 14.5h-8v14h-4.5v-43zm4.5 25h8c5.5 0 10-4.5 10-10s-4.5-10-10-10h-8v20z"/>
+  <path fill="#ffffff" d="M78 40.5h4.5v43h-4.5v-43z"/>
+  <path fill="#ffffff" d="M94.5 55.5h15v4.5h-15v-4.5zm0 8h15v4.5h-15v-4.5z"/>
+  <path fill="#ffffff" d="M102 47.5v20h-4.5v-20h4.5z"/>
+  <path fill="#ffffff" d="M110.5 47.5v20h-4.5v-20h4.5z"/>
+  <text x="32" y="95" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">C++</text>
+</svg>

@@ -164,6 +164,22 @@
     animation: typewriter 3s steps(40) 1s 1 normal both, blink 1s infinite;
   }
   
+  /* 优化的闪烁动画 */
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+  }
+  
+  /* 打字机光标动画 */
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  .cursor-blink {
+    animation: cursor-blink 1s infinite;
+  }
+  
   /* 渐变文字效果 */
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
@@ -178,4 +194,42 @@
   .hover-lift {
     @apply transition-transform duration-300 hover:scale-105 hover:-translate-y-1;
   }
+  
+  /* 防止布局抖动的固定容器 */
+  .typewriter-container {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (min-width: 768px) {
+    .typewriter-container {
+      min-height: 140px;
+    }
+  }
+}
+
+/* 自定义滚动条样式 */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.5) rgba(51, 65, 85, 0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(51, 65, 85, 0.3);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.7);
 }

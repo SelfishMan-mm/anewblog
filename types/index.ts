@@ -129,7 +129,6 @@ export interface SkillsSectionProps {
 
 export interface PortfolioSectionProps {
   projects: Project[];
-  displayMode?: '3d-marquee' | '3d-pin';
 }
 
 export interface TimelineSectionProps {
@@ -182,9 +181,8 @@ export interface TypewriterConfig {
 }
 
 // 组件变体类型
-export type DisplayMode = '3d-marquee' | '3d-pin' | 'grid' | 'list';
-export type SkillDisplayMode = 'orbiting' | 'marquee' | 'grid';
-export type BackgroundEffect = 'meteors' | 'particles' | 'orbiting' | 'boxes';
+export type SkillDisplayMode = 'orbiting' | 'marquee';
+export type BackgroundEffect = 'meteors' | 'particles';
 
 // 响应式断点类型
 export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl';

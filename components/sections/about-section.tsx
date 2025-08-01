@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Timeline } from '@/components/ui/timeline';
+
 import { Boxes } from '@/components/ui/background-boxes';
 import { ComponentErrorBoundary } from '@/components/error-boundary';
 import { useAnimationControl } from '@/hooks/use-animation-control';
@@ -14,33 +14,14 @@ interface AboutSectionProps {
 }
 
 export function AboutSection({ personalInfo, timeline }: AboutSectionProps) {
-  const [activeTab, setActiveTab] = useState<'info' | 'timeline'>('info');
+  // 移除标签页功能，只显示个人信息
 
   const { ref: sectionRef, isVisible } = useAnimationControl({
     threshold: 0.2,
     triggerOnce: true
   });
 
-  // 转换timeline数据为Timeline组件需要的格式
-  const timelineData = timeline.map((event) => ({
-    title: event.date,
-    content: (
-      <div className="space-y-4">
-        <div className="flex items-center gap-3 mb-3">
-          <div className={`w-3 h-3 rounded-full ${getTypeColor(event.type)}`} />
-          <span className="text-sm text-muted-foreground capitalize">
-            {getTypeLabel(event.type)}
-          </span>
-        </div>
-        <h3 className="text-xl font-semibold text-foreground mb-2">
-          {event.title}
-        </h3>
-        <p className="text-muted-foreground leading-relaxed">
-          {event.description}
-        </p>
-      </div>
-    )
-  }));
+
 
   return (
     <ComponentErrorBoundary componentName="AboutSection">
@@ -71,41 +52,9 @@ export function AboutSection({ personalInfo, timeline }: AboutSectionProps) {
             </p>
           </motion.div>
 
-          {/* 标签切换 */}
-          <div className="flex justify-center mb-12">
-            <div className="flex bg-slate-800/50 rounded-full p-1 border border-slate-700/50 backdrop-blur-sm">
-              <button
-                onClick={() => setActiveTab('info')}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'info'
-                    ? 'bg-blue-600 text-white shadow-lg'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                个人信息
-              </button>
-              <button
-                onClick={() => setActiveTab('timeline')}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'timeline'
-                    ? 'bg-blue-600 text-white shadow-lg'
-                    : 'text-slate-300 hover:text-white'
-                }`}
-              >
-                成长经历
-              </button>
-            </div>
-          </div>
-
-          {/* 内容区域 */}
+          {/* 个人信息内容 */}
           <div className="relative">
-            {activeTab === 'info' && (
-              <PersonalInfoContent personalInfo={personalInfo} />
-            )}
-            
-            {activeTab === 'timeline' && (
-              <TimelineContent timelineData={timelineData} />
-            )}
+            <PersonalInfoContent personalInfo={personalInfo} />
           </div>
         </div>
       </section>
@@ -194,40 +143,9 @@ function PersonalInfoContent({ personalInfo }: { personalInfo: PersonalInfo }) {
   );
 }
 
-// 时间轴内容组件
-function TimelineContent({ timelineData }: { timelineData: any[] }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="bg-slate-900/50 backdrop-blur-sm rounded-xl overflow-hidden"
-    >
-      <Timeline data={timelineData} />
-    </motion.div>
-  );
-}
 
-// 辅助函数
-function getTypeColor(type: string): string {
-  const colors = {
-    education: 'bg-blue-500',
-    work: 'bg-green-500',
-    project: 'bg-purple-500',
-    achievement: 'bg-yellow-500'
-  };
-  return colors[type as keyof typeof colors] || 'bg-gray-500';
-}
 
-function getTypeLabel(type: string): string {
-  const labels = {
-    education: '教育',
-    work: '工作',
-    project: '项目',
-    achievement: '成就'
-  };
-  return labels[type as keyof typeof labels] || type;
-}
+
 
 function getInterestIcon(interest: string): string {
   if (interest.includes('Apex')) return '🎮';

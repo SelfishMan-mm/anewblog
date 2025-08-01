@@ -1,14 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { STORAGE_KEYS, DEFAULT_VALUES } from '@/lib/constants';
+import { STORAGE_KEYS } from '@/lib/constants';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark'; // 固定深色主题
 
 interface ThemeContextType {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
-  toggleTheme: () => void;
   animationsEnabled: boolean;
   setAnimationsEnabled: (enabled: boolean) => void;
   toggleAnimations: () => void;
@@ -18,37 +16,25 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = DEFAULT_VALUES.THEME,
-  storageKey = STORAGE_KEYS.THEME,
-}: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(DEFAULT_VALUES.ANIMATIONS_ENABLED);
+export function ThemeProvider({ children }: ThemeProviderProps) {
+  const [animationsEnabled, setAnimationsEnabledState] = useState<boolean>(true);
   const [mounted, setMounted] = useState(false);
 
-  // 初始化主题
+  // 初始化动画设置
   useEffect(() => {
     try {
-      const storedTheme = localStorage.getItem(storageKey) as Theme;
       const storedAnimations = localStorage.getItem(STORAGE_KEYS.ANIMATIONS_ENABLED);
-      
-      if (storedTheme && (storedTheme === 'light' || storedTheme === 'dark')) {
-        setThemeState(storedTheme);
-      }
       
       if (storedAnimations !== null) {
         setAnimationsEnabledState(JSON.parse(storedAnimations));
       }
     } catch (error) {
-      console.warn('Failed to load theme from localStorage:', error);
+      console.warn('Failed to load animations setting from localStorage:', error);
     }
     setMounted(true);
-  }, [storageKey]);
+  }, []);
 
   // 应用主题到 DOM
   useEffect(() => {
@@ -59,44 +45,41 @@ export function ThemeProvider({
     // 移除之前的主题类
     root.classList.remove('light', 'dark');
     
-    // 添加当前主题类
-    root.classList.add(theme);
+    // 添加当前主题类 - 固定为深色主题
+    root.classList.add('dark');
     
     // 保存到 localStorage
     try {
-      localStorage.setItem(storageKey, theme);
+      localStorage.setItem(STORAGE_KEYS.THEME, 'dark');
     } catch (error) {
       console.warn('Failed to save theme to localStorage:', error);
     }
-  }, [theme, storageKey, mounted]);
+  }, [mounted]);
 
-  // 应用动画设置
+  // 应用固定深色主题和动画设置
   useEffect(() => {
     if (!mounted) return;
 
     const root = window.document.documentElement;
     
+    // 固定应用深色主题
+    root.classList.remove('light');
+    root.classList.add('dark');
+    
+    // 应用动画设置
     if (animationsEnabled) {
       root.classList.remove('reduce-motion');
     } else {
       root.classList.add('reduce-motion');
     }
     
-    // 保存到 localStorage
+    // 保存动画设置到 localStorage
     try {
       localStorage.setItem(STORAGE_KEYS.ANIMATIONS_ENABLED, JSON.stringify(animationsEnabled));
     } catch (error) {
       console.warn('Failed to save animations setting to localStorage:', error);
     }
   }, [animationsEnabled, mounted]);
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-  };
-
-  const toggleTheme = () => {
-    setThemeState(prev => prev === 'light' ? 'dark' : 'light');
-  };
 
   const setAnimationsEnabled = (enabled: boolean) => {
     setAnimationsEnabledState(enabled);
@@ -107,9 +90,7 @@ export function ThemeProvider({
   };
 
   const value: ThemeContextType = {
-    theme,
-    setTheme,
-    toggleTheme,
+    theme: 'dark', // 固定深色主题
     animationsEnabled,
     setAnimationsEnabled,
     toggleAnimations,
@@ -141,13 +122,13 @@ export const useTheme = () => {
   return context;
 };
 
-// 主题切换按钮组件
-export function ThemeToggle({ className }: { className?: string }) {
-  const { theme, toggleTheme } = useTheme();
+// 动画切换按钮组件（替代主题切换）
+export function AnimationToggle({ className }: { className?: string }) {
+  const { animationsEnabled, toggleAnimations } = useTheme();
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={toggleAnimations}
       className={`
         relative inline-flex h-10 w-10 items-center justify-center rounded-md
         border border-border bg-background text-foreground
@@ -156,9 +137,9 @@ export function ThemeToggle({ className }: { className?: string }) {
         transition-colors duration-200
         ${className}
       `}
-      aria-label={`切换到${theme === 'light' ? '深色' : '浅色'}模式`}
+      aria-label={`${animationsEnabled ? '禁用' : '启用'}动画效果`}
     >
-      {theme === 'light' ? (
+      {animationsEnabled ? (
         <svg
           className="h-5 w-5"
           fill="none"

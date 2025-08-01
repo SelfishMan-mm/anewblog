@@ -76,7 +76,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
       >
         <ErrorBoundary>
-          <ThemeProvider defaultTheme="dark">
+          <ThemeProvider>
             <SmoothCursor />
             <div className="relative min-h-screen flex flex-col">
               {/* 用于包裹 children 和导航栏的客户端组件 */}
@@ -85,7 +85,7 @@ export default function RootLayout({
               <footer className="mt-auto">
                 {/* 动态引入 FooterSection 以避免 SSR 问题 */}
                 {typeof window !== 'undefined' && (
-                  require('@/components/sections/footer-section').FooterSection()
+                  <div>Footer content will be loaded dynamically</div>
                 )}
               </footer>
             </div>

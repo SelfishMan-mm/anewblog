@@ -1,22 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { ThreeDMarquee } from '@/components/ui/3d-marquee';
 import { PinContainer } from '@/components/ui/3d-pin';
 import { ComponentErrorBoundary } from '@/components/error-boundary';
 import { useAnimationControl, useBatchAnimation } from '@/hooks/use-animation-control';
 import { projectUtils } from '@/lib/data-utils';
 import { PROJECT_STATUS } from '@/lib/constants';
-import type { Project, DisplayMode } from '@/types';
+import type { Project } from '@/types';
 import Image from 'next/image';
 
 interface PortfolioSectionProps {
   projects: Project[];
-  displayMode?: DisplayMode;
 }
 
-export function PortfolioSection({ projects, displayMode = '3d-marquee' }: PortfolioSectionProps) {
-  const [activeMode, setActiveMode] = useState<DisplayMode>(displayMode);
+export function PortfolioSection({ projects }: PortfolioSectionProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const { ref: sectionRef, isVisible } = useAnimationControl({
@@ -70,43 +67,9 @@ export function PortfolioSection({ projects, displayMode = '3d-marquee' }: Portf
             </div>
           </div>
 
-          {/* 显示模式切换 */}
-          <div className="flex justify-center mb-8">
-            <div className="flex bg-card/50 rounded-full p-1 border border-border/50">
-              <button
-                onClick={() => setActiveMode('3d-marquee')}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeMode === '3d-marquee'
-                    ? 'bg-primary text-primary-foreground shadow-lg'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                3D 跑马灯
-              </button>
-              <button
-                onClick={() => setActiveMode('3d-pin')}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  activeMode === '3d-pin'
-                    ? 'bg-primary text-primary-foreground shadow-lg'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                3D 卡片
-              </button>
-            </div>
-          </div>
-
-          {/* 移除分类过滤栏 */}
-
           {/* 项目展示区域 */}
           <div className="relative" ref={projectsRef as any}>
-            {activeMode === '3d-marquee' && (
-              <ThreeDMarqueeProjects projects={filteredProjects} />
-            )}
-            
-            {activeMode === '3d-pin' && (
-              <ThreeDPinProjects projects={filteredProjects} />
-            )}
+            <ThreeDPinProjects projects={filteredProjects} />
           </div>
 
           {/* 项目详情弹窗 */}
@@ -119,21 +82,6 @@ export function PortfolioSection({ projects, displayMode = '3d-marquee' }: Portf
         </div>
       </section>
     </ComponentErrorBoundary>
-  );
-}
-
-// 3D 跑马灯展示组件
-function ThreeDMarqueeProjects({ 
-  projects
-}: { 
-  projects: Project[];
-}) {
-  return (
-    <div className="h-[600px] relative">
-      <ThreeDMarquee
-        images={projects.map(project => project.image)}
-      />
-    </div>
   );
 }
 
@@ -173,23 +121,65 @@ function ThreeDPinProjects({
 function ProjectPinCard({ project }: { project: Project }) {
   const statusConfig = PROJECT_STATUS[project.status.toUpperCase() as keyof typeof PROJECT_STATUS];
   
+  // 为不同类型的项目生成不同的渐变色
+  const getProjectGradient = (category: string, projectName: string) => {
+    const gradients = {
+      '机器学习': 'from-purple-500 via-purple-600 to-blue-600',
+      '区块链': 'from-orange-500 via-red-500 to-pink-600', 
+      '前端开发': 'from-blue-500 via-cyan-500 to-teal-600',
+      '系统开发': 'from-gray-600 via-gray-700 to-gray-800',
+      '数据分析': 'from-green-500 via-emerald-600 to-cyan-600',
+      '数据工程': 'from-indigo-500 via-purple-600 to-pink-600',
+    };
+    return gradients[category as keyof typeof gradients] || 'from-gray-500 via-gray-600 to-gray-700';
+  };
+  
   return (
-    <div className="w-[20rem] h-[25rem] bg-black/90 border border-white/[0.1] rounded-xl overflow-hidden">
-      {/* 项目图片 */}
+    <div className="w-[20rem] h-[25rem] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-white/[0.1] rounded-xl overflow-hidden shadow-2xl">
+      {/* 项目图片或占位符 */}
       <div className="relative h-40 overflow-hidden">
-        <Image
-          src={project.image}
-          alt={project.name}
-          fill
-          className="object-cover"
-          unoptimized={project.image.startsWith('data:')}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        {project.image ? (
+          <>
+            <Image
+              src={project.image}
+              alt={project.name}
+              fill
+              className="object-cover"
+              unoptimized={project.image.startsWith('data:')}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+          </>
+        ) : (
+          // 漂亮的占位符
+          <div className={`w-full h-full bg-gradient-to-br ${getProjectGradient(project.category, project.name)} relative overflow-hidden`}>
+            {/* 装饰性图案 */}
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-4 left-4 w-16 h-16 border-2 border-white/30 rounded-full"></div>
+              <div className="absolute top-8 right-8 w-8 h-8 border border-white/20 rotate-45"></div>
+              <div className="absolute bottom-6 left-8 w-12 h-12 border border-white/25 rounded-lg rotate-12"></div>
+              <div className="absolute bottom-4 right-4 w-6 h-6 bg-white/10 rounded-full"></div>
+            </div>
+            
+            {/* 项目名称 */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-white mb-2">
+                  {project.name}
+                </div>
+                <div className="text-sm text-white/80">
+                  敬请期待
+                </div>
+              </div>
+            </div>
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 to-transparent" />
+          </div>
+        )}
         
         {/* 状态标签 */}
         <div className="absolute top-3 right-3">
           <span 
-            className="px-2 py-1 text-xs font-medium rounded-full text-white"
+            className="px-2 py-1 text-xs font-medium rounded-full text-white shadow-lg"
             style={{ backgroundColor: statusConfig?.color }}
           >
             {statusConfig?.icon} {statusConfig?.label}
@@ -199,7 +189,7 @@ function ProjectPinCard({ project }: { project: Project }) {
         {/* 特色标签 */}
         {project.featured && (
           <div className="absolute top-3 left-3">
-            <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-black">
+            <span className="px-2 py-1 text-xs font-medium rounded-full bg-yellow-500 text-black shadow-lg">
               ⭐ 精选
             </span>
           </div>
@@ -207,15 +197,17 @@ function ProjectPinCard({ project }: { project: Project }) {
       </div>
 
       {/* 项目信息 */}
-      <div className="p-4 text-white">
+      <div className="p-4 text-white bg-gradient-to-b from-gray-800/50 to-gray-900/80 backdrop-blur-sm">
         <div className="flex items-start justify-between mb-2">
           <h3 className="text-lg font-semibold text-white">
             {project.name}
           </h3>
-          <span className="text-xs text-gray-400">{project.category}</span>
+          <span className="text-xs text-gray-300 bg-gray-700/50 px-2 py-1 rounded-full">
+            {project.category}
+          </span>
         </div>
         
-        <p className="text-gray-300 text-sm mb-3 line-clamp-2">
+        <p className="text-gray-200 text-sm mb-3 line-clamp-2">
           {project.description}
         </p>
 
@@ -224,13 +216,13 @@ function ProjectPinCard({ project }: { project: Project }) {
           {project.techStack.slice(0, 4).map((tech) => (
             <span
               key={tech}
-              className="px-2 py-1 bg-cyan-500/20 text-cyan-300 text-xs rounded-full"
+              className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-400/20"
             >
               {tech}
             </span>
           ))}
           {project.techStack.length > 4 && (
-            <span className="px-2 py-1 bg-gray-700 text-gray-300 text-xs rounded-full">
+            <span className="px-2 py-1 bg-gray-600/30 text-gray-300 text-xs rounded-full border border-gray-500/20">
               +{project.techStack.length - 4}
             </span>
           )}
@@ -244,7 +236,7 @@ function ProjectPinCard({ project }: { project: Project }) {
                 e.stopPropagation();
                 window.open(project.githubUrl, '_blank');
               }}
-              className="flex-1 px-3 py-1 bg-gray-800 text-gray-300 text-xs text-center rounded-full hover:bg-gray-700 transition-colors"
+              className="flex-1 px-3 py-1 bg-gray-700/50 text-gray-200 text-xs text-center rounded-full hover:bg-gray-600/60 transition-colors border border-gray-600/30"
             >
               GitHub
             </button>
@@ -255,7 +247,7 @@ function ProjectPinCard({ project }: { project: Project }) {
                 e.stopPropagation();
                 window.open(project.liveUrl, '_blank');
               }}
-              className="flex-1 px-3 py-1 bg-cyan-600 text-white text-xs text-center rounded-full hover:bg-cyan-500 transition-colors"
+              className="flex-1 px-3 py-1 bg-blue-600/20 text-blue-300 text-xs text-center rounded-full hover:bg-blue-500/30 transition-colors border border-blue-500/30"
             >
               预览
             </button>

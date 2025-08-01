@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import React from "react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import React, { useEffect, useState } from "react";
 
 export interface OrbitingCirclesProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,7 +25,24 @@ export function OrbitingCircles({
   speed = 1,
   ...props
 }: OrbitingCirclesProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReducedMotion(mediaQuery.matches);
+      
+      const handleChange = (event: MediaQueryListEvent) => {
+        setPrefersReducedMotion(event.matches);
+      };
+      
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      }
+    }
+  }, []);
+
   // 动画降级：低动效时减慢速度、缩小半径
   const calculatedDuration = prefersReducedMotion ? 8 : duration / speed;
   const actualRadius = prefersReducedMotion ? 80 : radius;

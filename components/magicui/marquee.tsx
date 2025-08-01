@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
-import { useAnimationSettings } from "@/hooks/use-animation-settings";
+
 
 interface MarqueeProps extends ComponentPropsWithoutRef<"div"> {
   /**
@@ -42,7 +42,8 @@ export function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
-  const { shouldReduceAnimations } = useAnimationSettings();
+  // 简化动画设置，直接检测用户偏好
+  const shouldReduceAnimations = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   return (
     <div
       {...props}

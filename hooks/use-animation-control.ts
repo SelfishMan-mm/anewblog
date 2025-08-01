@@ -103,7 +103,7 @@ export function useBatchAnimation(count: number, staggerDelay: number = 100) {
   };
 }
 
-// 打字机效果 Hook
+// 打字机效果 Hook - 优化版
 export function useTypewriter(
   strings: string[],
   options: {
@@ -115,9 +115,9 @@ export function useTypewriter(
   } = {}
 ) {
   const {
-    typeSpeed = 50,
-    backSpeed = 30,
-    backDelay = 1500,
+    typeSpeed = 100,
+    backSpeed = 50,
+    backDelay = 2000,
     startDelay = 500,
     loop = true
   } = options;
@@ -125,16 +125,25 @@ export function useTypewriter(
   const [displayText, setDisplayText] = useState('');
   const [currentStringIndex, setCurrentStringIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const { animationsEnabled } = useTheme();
 
   useEffect(() => {
     if (!animationsEnabled || strings.length === 0) {
       setDisplayText(strings[0] || '');
+      setIsInitialized(true);
       return;
     }
 
-    let timeout: NodeJS.Timeout;
+    // 初始延迟
+    if (!isInitialized) {
+      const initTimeout = setTimeout(() => {
+        setIsInitialized(true);
+      }, startDelay);
+      return () => clearTimeout(initTimeout);
+    }
 
+    let timeout: NodeJS.Timeout;
     const currentString = strings[currentStringIndex];
 
     if (isTyping) {
@@ -177,16 +186,6 @@ export function useTypewriter(
     loop,
     animationsEnabled
   ]);
-
-  // 初始延迟
-  useEffect(() => {
-    if (startDelay > 0 && animationsEnabled) {
-      const timeout = setTimeout(() => {
-        setIsTyping(true);
-      }, startDelay);
-      return () => clearTimeout(timeout);
-    }
-  }, [startDelay, animationsEnabled]);
 
   return {
     displayText: animationsEnabled ? displayText : strings[0] || '',

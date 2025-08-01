@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
 
 interface MeteorsProps {
   number?: number;
@@ -26,7 +26,8 @@ export const Meteors = ({
   className,
   autoReduce = true,
 }: MeteorsProps) => {
-  const prefersReducedMotion = useReducedMotion();
+  // 直接检测用户偏好
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // 自动降级动画数量
   const meteorCount = autoReduce && prefersReducedMotion ? 4 : number;
   const [meteorStyles, setMeteorStyles] = useState<Array<React.CSSProperties>>(
