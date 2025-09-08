@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/contexts/theme-context";
 import ErrorBoundary from "@/components/error-boundary";
@@ -91,6 +92,7 @@ export default function RootLayout({
             </div>
           </ThemeProvider>
         </ErrorBoundary>
+        <Analytics />
       </body>
     </html>
   );
