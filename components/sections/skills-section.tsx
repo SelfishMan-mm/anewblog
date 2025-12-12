@@ -21,8 +21,16 @@ export function SkillsSection({ skills, displayMode = 'orbiting' }: SkillsSectio
     triggerOnce: true
   });
 
+  // 只统计专业技能组的技能
+  const professionalSkills = (mockSiteData.skillGroups?.[0]?.skills || []).map(s => ({
+    name: s.name,
+    level: s.level,
+    category: '专业技能',
+    icon: ''
+  }));
+  
   // 获取技能统计
-  const skillStats = skillUtils.getSkillStats(skills);
+  const skillStats = skillUtils.getSkillStats(professionalSkills);
 
   return (
     <ComponentErrorBoundary componentName="SkillsSection">
@@ -38,26 +46,22 @@ export function SkillsSection({ skills, displayMode = 'orbiting' }: SkillsSectio
               技能展示
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              掌握多种技术栈，专注于数据分析、机器学习和全栈开发
+              深耕 Web3 生态与链上数据分析，专注于 AI-Agent 开发和前端工程
             </p>
             
             {/* 技能统计 */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto mb-8">
               <div className="p-4 bg-card/50 rounded-lg border border-border/50">
-                <div className="text-2xl font-bold text-primary">{skillStats.total}</div>
-                <div className="text-sm text-muted-foreground">总技能</div>
+                <div className="text-2xl font-bold text-white">{skillStats.total}</div>
+                <div className="text-sm text-neutral-400">总技能</div>
               </div>
               <div className="p-4 bg-card/50 rounded-lg border border-border/50">
-                <div className="text-2xl font-bold text-secondary">{skillStats.averageLevel}</div>
-                <div className="text-sm text-muted-foreground">平均水平</div>
+                <div className="text-2xl font-bold text-white">{skillStats.averageLevel}</div>
+                <div className="text-sm text-neutral-400">平均水平</div>
               </div>
               <div className="p-4 bg-card/50 rounded-lg border border-border/50">
-                <div className="text-2xl font-bold text-accent">{skillStats.levelDistribution.expert}</div>
-                <div className="text-sm text-muted-foreground">专家级</div>
-              </div>
-              <div className="p-4 bg-card/50 rounded-lg border border-border/50">
-                <div className="text-2xl font-bold text-primary">{Object.keys(skillStats.categoryStats).length}</div>
-                <div className="text-sm text-muted-foreground">技能分类</div>
+                <div className="text-2xl font-bold text-white">{Object.keys(skillStats.categoryStats).length}</div>
+                <div className="text-sm text-neutral-400">技能分类</div>
               </div>
             </div>
           </div>
@@ -95,10 +99,9 @@ function OrbitingSkills({ skills }: { skills: Skill[] }) {
     <div className="relative flex h-[500px] w-full items-center justify-center">
       {/* 中心内容 */}
       <div className="text-center">
-        <div className="w-32 h-32 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center mb-4 mx-auto">
+        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center mb-4 mx-auto shadow-[0_0_30px_rgba(59,130,246,0.5)]">
           <span className="text-2xl font-bold text-white">编程语言</span>
         </div>
-        <p className="text-muted-foreground">核心技术栈</p>
       </div>
 
       {/* 环绕的技能 */}

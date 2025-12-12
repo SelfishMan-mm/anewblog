@@ -17,9 +17,9 @@ export const navigationConfig = [
     href: '/about',
   },
   {
-    id: 'timeline',
-    label: '成长经历',
-    href: '/timeline',
+    id: 'doing',
+    label: '我正在做什么',
+    href: '/doing',
   },
   {
     id: 'contact',

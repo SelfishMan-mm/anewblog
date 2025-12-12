@@ -74,7 +74,7 @@ function getSkillIconPlaceholder(skillName: string, size: number = 32): string {
 export const mockSiteData: SiteConfig = {
   personal: {
     name: "Meless",
-    title: "躺平大师",
+    title: "啥都会一点的平凡程序员",
     motto: [
       "一路寒风身入絮，命海浮沉客独行",
       "惊鸿四散鱼逃尽，唯有残帆傲此间",
@@ -92,7 +92,7 @@ export const mockSiteData: SiteConfig = {
         type: "education",
       },
     ],
-    interests: ["玩Apex", "听音乐（周杰伦）", "Coding"],
+    interests: ["Apex", "听音乐", "Coding"],
   },
 
   skills: [
@@ -110,10 +110,29 @@ export const mockSiteData: SiteConfig = {
       icon: "/icons/c.svg",
     },
     {
-      name: "TypeScript",
+      name: "React",
       level: 80,
       category: "编程语言",
-      icon: "/icons/BxlTypescript.svg",
+      icon: "/icons/react.png",
+    },
+    // 深耕领域
+    {
+      name: "数据分析",
+      level: 88,
+      category: "深耕领域",
+      icon: "/icons/data.svg",
+    },
+    {
+      name: "Web3",
+      level: 75,
+      category: "深耕领域",
+      icon: "/icons/web3.svg",
+    },
+    {
+      name: "AI",
+      level: 80,
+      category: "深耕领域",
+      icon: "/icons/ai.svg",
     },
   ],
 
@@ -123,14 +142,19 @@ export const mockSiteData: SiteConfig = {
       group: "专业技能",
       skills: [
         {
-          name: "数据爬取与分析",
-          level: 88,
-          description: "网络数据采集和处理",
+          name: "Web3 生态研究 & 赛道扫描",
+          level: 70,
+          description: "区块链生态分析与趋势洞察",
         },
         {
-          name: "WEB3",
-          level: 75,
-          description: "区块链和去中心化应用",
+          name: "智能合约原理与 DApp 交互流程",
+          level: 60,
+          description: "智能合约开发与去中心化应用交互",
+        },
+        {
+          name: "链上数据抓取与可视化",
+          level: 70,
+          description: "区块链数据采集与图表展示",
         },
         {
           name: "AI-Agent",
@@ -138,35 +162,50 @@ export const mockSiteData: SiteConfig = {
           description: "智能代理和自动化",
         },
         {
-          name: "数据可视化",
-          level: 85,
-          description: "数据图表和可视化展示",
-        },
-        {
-          name: "数据清洗",
-          level: 87,
+          name: "数据清洗 / Pandas",
+          level: 80,
           description: "数据预处理和质量控制",
         },
-      ],
-    },
-    {
-      group: "数据库",
-      skills: [
         {
           name: "MySQL",
           level: 80,
           description: "关系型数据库管理",
         },
         {
-          name: "MongoDB",
-          level: 40,
-          description: "NoSQL文档数据库",
+          name: "Next.js / React",
+          level: 85,
+          description: "现代化全栈框架与前端开发",
         },
       ],
     },
   ],
 
   projects: [
+    {
+      id: "6",
+      name: "个人网站",
+      description: "基于 Next.js 14 的现代化个人展示网站，集成炫酷动效和响应式设计。",
+      longDescription:
+        "这是一个功能完整的现代化个人网站，采用 Next.js 14 App Router 架构，TypeScript 提供类型安全，TailwindCSS 构建现代 UI 风格。网站集成了丰富的交互动效，包括粒子背景、3D 卡片展示、轨道环绕技能展示、时间轴动画等。具备完整的页面结构：首页英雄区域、技能展示、项目作品集、关于我页面、成长经历时间轴、联系方式和留言板功能。采用 Framer Motion 实现流畅的页面过渡和元素动画，支持动画开关控制，适配移动端和桌面端。项目展示了我在现代前端开发、UI/UX 设计和动效实现方面的综合能力。",
+      image: "/personal-website.png",
+      techStack: [
+        "Next.js 14",
+        "TypeScript",
+        "TailwindCSS",
+        "Framer Motion",
+        "React",
+        "Vercel",
+        "ESLint",
+        "PostCSS",
+      ],
+      githubUrl: "https://github.com/SelfishMan-mm/anewblog",
+      liveUrl: "https://meless.dev",
+      category: "前端开发",
+      featured: true,
+      status: "completed",
+      startDate: "2025-11-15",
+      endDate: "2025-12-02",
+    },
     {
       id: "1",
       name: "cpp-chatroom",
@@ -178,26 +217,10 @@ export const mockSiteData: SiteConfig = {
       techStack: ["C++", "Socket编程", "多线程", "Linux", "网络编程"],
       githubUrl: "https://github.com/SelfishMan-mm/cpp-chatroom",
       category: "系统开发",
-      featured: true,
+      featured: false,
       status: "completed",
       startDate: "2025-05-01",
       endDate: "2025-05-15",
-    },
-    {
-      id: "2",
-      name: "CryptoDash",
-      description: "加密货币数据分析仪表板，提供实时价格监控和技术分析工具。",
-      longDescription:
-        "一个专业的加密货币数据分析平台，集成了多个交易所的实时数据，提供价格监控、技术指标分析、投资组合管理等功能。使用 Python Flask 作为后端，Web3 技术获取区块链数据，Chart.js 实现数据可视化。该项目展示了我在数据分析、Web开发和区块链技术方面的综合能力。",
-      image: "/CryptoDash.png",
-      techStack: ["Python", "Flask", "Web3", "数据分析", "Chart.js", "API集成"],
-      githubUrl: "https://github.com/SelfishMan-mm/CryptoDash",
-      liveUrl: "https://cryptodash-demo.vercel.app",
-      category: "数据分析",
-      featured: true,
-      status: "completed",
-      startDate: "2025-06-10",
-      endDate: "2025-07-20",
     },
     {
       id: "3",
@@ -220,55 +243,6 @@ export const mockSiteData: SiteConfig = {
       featured: false,
       status: "in-progress",
       startDate: "2025-06-01",
-    },
-    {
-      id: "4",
-      name: "AI智能助手",
-      description: "基于大语言模型的智能对话助手，支持多种任务处理。",
-      longDescription:
-        "一个集成了最新AI技术的智能助手项目，支持自然语言对话、代码生成、文档分析等多种功能。使用了Transformer架构和微调技术，能够理解用户意图并提供准确的回答。项目展示了我在AI-Agent开发和大模型应用方面的探索。",
-      image: "",
-      techStack: ["Python", "PyTorch", "Transformers", "FastAPI", "AI-Agent"],
-      githubUrl: "https://github.com/SelfishMan-mm/ai-assistant",
-      category: "机器学习",
-      featured: true,
-      status: "in-progress",
-      startDate: "2025-04-15",
-    },
-    {
-      id: "5",
-      name: "DeFi数据分析平台",
-      description: "去中心化金融数据分析平台，提供DeFi协议数据监控和分析。",
-      longDescription:
-        "专注于DeFi生态的数据分析平台，集成了主流DeFi协议的数据，提供流动性分析、收益率计算、风险评估等功能。使用Web3技术直接从区块链获取数据，确保数据的准确性和实时性。该项目结合了我在区块链和数据分析方面的技能。",
-      image: "",
-      techStack: ["Solidity", "Web3", "Python", "React", "DeFi协议"],
-      githubUrl: "https://github.com/SelfishMan-mm/defi-analytics",
-      category: "区块链",
-      featured: false,
-      status: "planned",
-      startDate: "2025-08-01",
-    },
-    {
-      id: "6",
-      name: "个人网站",
-      description: "现代化的个人展示网站，采用最新的前端技术栈构建。",
-      longDescription:
-        "这个个人网站项目采用了Next.js、TypeScript、TailwindCSS等现代前端技术，集成了丰富的动效组件和响应式设计。网站展示了我的项目作品、技术技能和成长历程，是我前端开发能力的综合体现。",
-      image: "",
-      techStack: [
-        "Next.js",
-        "TypeScript",
-        "TailwindCSS",
-        "Framer Motion",
-        "Vercel",
-      ],
-      githubUrl: "https://github.com/SelfishMan-mm/personal-website",
-      liveUrl: "https://meless.dev",
-      category: "前端开发",
-      featured: true,
-      status: "in-progress",
-      startDate: "2025-07-25",
     },
   ],
 
@@ -364,7 +338,7 @@ export const mockSiteData: SiteConfig = {
   seo: {
     title: "Meless - 独游的小船 | 个人网站",
     description:
-      "我是Meless，一个专注于数据分析和机器学习的躺平大师。这里展示我的项目作品、技术技能和成长历程。",
+      "我是Meless，一个专注于数据分析和机器学习的数据分析师。这里展示我的项目作品、技术技能和成长历程。",
     keywords: [
       "Meless",
       "数据分析",
@@ -372,7 +346,7 @@ export const mockSiteData: SiteConfig = {
       "Python",
       "C++",
       "个人网站",
-      "躺平大师",
+      "数据分析师",
       "苏州",
       "大数据技术",
     ],

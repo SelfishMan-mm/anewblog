@@ -96,10 +96,10 @@ export function HeroSection({
                 {/* 技能标签预览 */}
                 <div className="space-y-3 mb-5">
                   <h2 className="text-sm font-semibold text-foreground/80 text-center">
-                    核心技能
+                    深耕领域
                   </h2>
                   <div className="flex flex-wrap justify-center gap-1.5">
-                    {mockSiteData.skills.filter(skill => ['Python', 'C++'].includes(skill.name)).map((skill, index) => (
+                    {mockSiteData.skills.filter(skill => ['数据分析', 'Web3', 'AI'].includes(skill.name)).map((skill, index) => (
                       <div
                         key={skill.name}
                         className="px-2.5 py-1 bg-card/80 backdrop-blur-sm border border-border/50 rounded-full text-xs hover:bg-accent hover:text-accent-foreground transition-all duration-300 hover:scale-105"
@@ -204,10 +204,10 @@ export function HeroSection({
                   {/* 技能标签预览 */}
                   <div className="space-y-3 mb-6">
                     <h2 className="text-lg font-semibold text-foreground/80 text-center">
-                      核心技能
+                      深耕领域
                     </h2>
                     <div className="flex flex-wrap justify-center gap-2">
-                      {mockSiteData.skills.filter(skill => ['Python', 'C++'].includes(skill.name)).map((skill, index) => (
+                      {mockSiteData.skills.filter(skill => ['数据分析', 'Web3', 'AI'].includes(skill.name)).map((skill, index) => (
                         <div
                           key={skill.name}
                           className="px-3 py-1.5 bg-card/80 backdrop-blur-sm border border-border/50 rounded-full text-sm hover:bg-accent hover:text-accent-foreground transition-all duration-300 hover:scale-105"

@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/config/site";
 import { ThemeProvider } from "@/contexts/theme-context";
 import ErrorBoundary from "@/components/error-boundary";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
 import ClientRoot from "@/components/client-root";
 import "./globals.css";
 
@@ -78,7 +77,6 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <ThemeProvider>
-            <SmoothCursor />
             <div className="relative min-h-screen flex flex-col">
               {/* 用于包裹 children 和导航栏的客户端组件 */}
               <ClientRoot>{children}</ClientRoot>

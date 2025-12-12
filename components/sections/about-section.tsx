@@ -3,8 +3,10 @@
 import { useState } from 'react';
 
 import { Boxes } from '@/components/ui/background-boxes';
+import { Timeline } from '@/components/ui/timeline';
 import { ComponentErrorBoundary } from '@/components/error-boundary';
 import { useAnimationControl } from '@/hooks/use-animation-control';
+import { Meteors } from '@/components/magicui/meteors';
 import type { PersonalInfo, TimelineEvent } from '@/types';
 import { motion } from 'motion/react';
 
@@ -28,12 +30,13 @@ export function AboutSection({ personalInfo, timeline }: AboutSectionProps) {
       <section 
         id="about" 
         ref={sectionRef}
-        className="min-h-screen py-20 px-8 relative overflow-hidden"
+        className="min-h-screen py-20 px-8 relative overflow-hidden bg-background"
       >
         {/* 背景装饰 */}
-        <div className="absolute inset-0 w-full h-full bg-slate-900 flex items-center justify-center">
-          <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+        <div className="absolute inset-0 w-full h-full bg-background flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 w-full h-full bg-background z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
           <Boxes />
+          <Meteors number={20} />
         </div>
 
         <div className="max-w-7xl mx-auto relative z-30">
@@ -44,10 +47,10 @@ export function AboutSection({ personalInfo, timeline }: AboutSectionProps) {
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
               关于我
             </h2>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               了解我的背景、经历和兴趣爱好
             </p>
           </motion.div>
@@ -56,6 +59,26 @@ export function AboutSection({ personalInfo, timeline }: AboutSectionProps) {
           <div className="relative">
             <PersonalInfoContent personalInfo={personalInfo} />
           </div>
+
+          {/* 成长经历时间轴 */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-20"
+          >
+            <div className="text-center mb-12">
+              <h3 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                成长经历
+              </h3>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                记录我的学习和成长历程，每一步都是向前的足迹
+              </p>
+            </div>
+            <div className="bg-card/50 backdrop-blur-sm rounded-xl overflow-hidden">
+              <TimelineContent timeline={timeline} />
+            </div>
+          </motion.div>
         </div>
       </section>
     </ComponentErrorBoundary>
@@ -74,9 +97,9 @@ function PersonalInfoContent({ personalInfo }: { personalInfo: PersonalInfo }) {
       {/* 左侧：基本信息 */}
       <div className="space-y-8">
         {/* 个人简介 */}
-        <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl p-6">
-          <h3 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+        <div className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-xl p-6">
+          <h3 className="text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 bg-primary rounded-full"></span>
             个人简介
           </h3>
           <p className="text-slate-300 leading-relaxed">
@@ -152,4 +175,49 @@ function getInterestIcon(interest: string): string {
   if (interest.includes('音乐') || interest.includes('周杰伦')) return '🎵';
   if (interest.includes('Coding')) return '💻';
   return '⭐';
+}
+
+// 时间轴内容组件
+function TimelineContent({ timeline }: { timeline: TimelineEvent[] }) {
+  const timelineData = timeline.map((event) => ({
+    title: event.date,
+    content: (
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 mb-3">
+          <div className={`w-3 h-3 rounded-full ${getTypeColor(event.type)}`} />
+          <span className="text-sm text-muted-foreground capitalize">
+            {getTypeLabel(event.type)}
+          </span>
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          {event.title}
+        </h3>
+        <p className="text-muted-foreground leading-relaxed">
+          {event.description}
+        </p>
+      </div>
+    )
+  }));
+
+  return <Timeline data={timelineData} />;
+}
+
+function getTypeColor(type: string): string {
+  const colors = {
+    education: 'bg-blue-500',
+    work: 'bg-green-500',
+    project: 'bg-purple-500',
+    achievement: 'bg-yellow-500'
+  };
+  return colors[type as keyof typeof colors] || 'bg-gray-500';
+}
+
+function getTypeLabel(type: string): string {
+  const labels = {
+    education: '教育',
+    work: '工作',
+    project: '项目',
+    achievement: '成就'
+  };
+  return labels[type as keyof typeof labels] || type;
 }

@@ -76,28 +76,28 @@
 
 :root {
   --radius: 0.625rem;
-  /* 黑色主基调 - 默认为深色模式 */
-  --background: oklch(0.08 0 0); /* 深黑色背景 */
-  --foreground: oklch(0.98 0 0); /* 白色文字 */
-  --card: oklch(0.12 0 0); /* 深灰卡片 */
-  --card-foreground: oklch(0.98 0 0); /* 白色卡片文字 */
-  --popover: oklch(0.12 0 0);
-  --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.6 0.2 250); /* 蓝色主色 */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.65 0.15 280); /* 紫色辅助色 */
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.25 0 0); /* 静音色 */
-  --muted-foreground: oklch(0.7 0 0);
-  --accent: oklch(0.2 0 0); /* 强调色 */
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.6 0.2 20); /* 红色警告 */
-  --border: oklch(0.25 0 0); /* 边框色 */
+  /* 黑白极简配色 - 以黑为主 */
+  --background: oklch(0 0 0); /* 纯黑背景 */
+  --foreground: oklch(1 0 0); /* 纯白文字 */
+  --card: oklch(0.1 0 0); /* 深灰卡片 */
+  --card-foreground: oklch(1 0 0); /* 白色卡片文字 */
+  --popover: oklch(0.05 0 0);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0); /* 白色主色 */
+  --primary-foreground: oklch(0 0 0); /* 黑色反色 */
+  --secondary: oklch(0.2 0 0); /* 深灰辅助色 */
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.15 0 0); /* 静音色 */
+  --muted-foreground: oklch(0.6 0 0);
+  --accent: oklch(0.15 0 0); /* 强调色背景 */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.2 20); /* 红色警告保持不变，或者改为深红 */
+  --border: oklch(0.2 0 0); /* 边框色 */
   --input: oklch(0.2 0 0); /* 输入框背景 */
-  --ring: oklch(0.6 0.2 250); /* 焦点环 */
-  --chart-1: oklch(0.6 0.2 250);
-  --chart-2: oklch(0.65 0.15 280);
-  --chart-3: oklch(0.7 0.15 180);
+  --ring: oklch(1 0 0); /* 焦点环为白色 */
+  --chart-1: oklch(1 0 0);
+  --chart-2: oklch(0.8 0 0);
+  --chart-3: oklch(0.6 0 0);
   --chart-4: oklch(0.75 0.15 120);
   --chart-5: oklch(0.8 0.15 60);
 }

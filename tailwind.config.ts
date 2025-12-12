@@ -23,28 +23,28 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#3b82f6", // 蓝色点缀
-          foreground: "#ffffff",
+          DEFAULT: "#ffffff", // 白色主色
+          foreground: "#000000",
         },
         secondary: {
-          DEFAULT: "#8b5cf6", // 紫色点缀
+          DEFAULT: "#262626", // 深灰辅助色
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#1f2937", // 深灰色
+          DEFAULT: "#262626", // 深灰色
           foreground: "#ffffff",
         },
         muted: {
-          DEFAULT: "#374151",
-          foreground: "#d1d5db",
+          DEFAULT: "#262626",
+          foreground: "#a3a3a3",
         },
         card: {
-          DEFAULT: "#111827",
+          DEFAULT: "#0a0a0a",
           foreground: "#ffffff",
         },
-        border: "#374151",
-        input: "#374151",
-        ring: "#3b82f6",
+        border: "#262626",
+        input: "#262626",
+        ring: "#ffffff",
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],

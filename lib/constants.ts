@@ -120,9 +120,9 @@ export const PAGE_CONFIG = {
 
 // SEO 配置
 export const SEO_CONFIG = {
-  DEFAULT_TITLE: 'Meless - 躺平大师',
+  DEFAULT_TITLE: 'Meless - Sololiving',
   TITLE_TEMPLATE: '%s | Meless',
-  DEFAULT_DESCRIPTION: '我是Meless，一个专注于数据分析和机器学习的躺平大师。',
+  DEFAULT_DESCRIPTION: '我是Meless，一个专注于数据分析和机器学习的数据分析师。',
   DEFAULT_KEYWORDS: ['Meless', '数据分析', '机器学习', 'Python', 'C++', '个人网站'],
   SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://meless.dev',
   TWITTER_HANDLE: '@meless',
